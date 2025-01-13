@@ -1,15 +1,20 @@
-import sys
-f=''
+import os
 b=[]
-print('~ NANOVIM ~\nCommands: :w=save :q=quit')
+f=''
+print('~ NANOVIM ~\nType text, use :w to save, :q to quit, :wq to save and quit')
 try:
  while 1:
-  try:t=input(f'{":" if not b else " "}{len(b)+1}')
-  except EOFError:break
+  t=input('> ')
   if t==':q':break
+  if t==':wq':
+   if not f:f=input('File: ')
+   if f:open(f,'w').write('\n'.join(b))
+   break
   if t==':w':
-   try:f=input('File: ');open(f,'w').write('\n'.join(b));print(f"'{f}' saved")
-   except:print('E212: Can\'t save file')
+   if not f:f=input('File: ')
+   if f:
+    open(f,'w').write('\n'.join(b))
+    print(f"Saved '{f}'")
   else:b+=[t]
-except KeyboardInterrupt:pass
-print('bye')
+except (KeyboardInterrupt,EOFError):pass
+print('Bye!')
